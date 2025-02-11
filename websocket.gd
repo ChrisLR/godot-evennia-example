@@ -24,6 +24,7 @@ func connect_to_url(url) -> int:
 	socket.supported_protocols = supported_protocols
 	socket.handshake_headers = handshake_headers
 	var err = socket.connect_to_url(url, tls_options)
+	print(err)
 	if err != OK:
 		return err
 	last_state = socket.get_ready_state()

@@ -1,51 +1,48 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdsg1k3raloeu"]
+[gd_scene load_steps=4 format=3 uid="uid://cdsg1k3raloeu"]
 
 [ext_resource type="Script" path="res://ui.gd" id="1_sdbxg"]
 [ext_resource type="Script" path="res://websocket.gd" id="2_efheh"]
 
-[node name="ui" type="Control"]
-layout_mode = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ivc1r"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+
+[node name="ui" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_ivc1r")
 script = ExtResource("1_sdbxg")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ChatLog" type="RichTextLabel" parent="Panel/VBoxContainer"]
+[node name="ChatLog" type="RichTextLabel" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_vertical = 8
 
-[node name="ChatInput" type="TextEdit" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="ChatInput" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(800, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -54,4 +51,6 @@ text = "Send"
 [node name="WebSocketClient" type="Node" parent="."]
 script = ExtResource("2_efheh")
 
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="meta_clicked" from="VBoxContainer/ChatLog" to="." method="_on_chat_log_meta_clicked"]
+[connection signal="text_submitted" from="VBoxContainer/HBoxContainer/ChatInput" to="." method="_on_chat_input_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_button_pressed"]
